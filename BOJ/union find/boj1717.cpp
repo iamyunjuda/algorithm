@@ -1,62 +1,43 @@
 #include <iostream>
-#include <algorithm>
-#include <string>
 using namespace std;
+// Union Find
+const int Max = 1000000;
 
-const int MAX = 1000000 + 1;
-
-int n, m;
-int parent[MAX] = {-1,};
-int level[MAX];
-int find(int a) {
-	if (a == parent[a]) return a;
-	return parent[a] = find(parent[a]);
-
-
+int N, M;
+// A[i]: i ì˜ root
+int A[Max];
+// Find í•¨ìˆ˜
+int find(int num) {
+	if (A[num] < 0)
+		return num;
+	int parent = find(A[num]);
+	A[num] = parent;
+	return parent;
 }
-
-void Union(int a, int b) {
-	a = find(parent[a]);
-	b = find(parent[b]);
-	if (a != b) {
-		if (level[a] < level[b]) {
-			parent[a] = b;
-			level[a] += level[b];
-		}
-		else {
-			parent[b] = a;
-			level[b] += level[a];
-		}
-
-	
-	}
-
+// Union í•¨ìˆ˜
+void merge(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a == b) return;
+	A[a] = b;
 }
+int n, m, l;
+int main() {
+	ios_base::sync_with_stdio(false); cout.tie(NULL); cin.tie(NULL);
 
-int main(void)
-
-{
-	ios_base::sync_with_stdio(0);
-	cin.tie(0); //cin ½ÇÇà¼Óµµ Çâ»ó
-	cin >> n>> m;
-	for (int i = 1; i < MAX; i++) {
-		parent[i] = i;
-		level[i] = 0;
-	}
-	for (int i = 0; i < m; i++) {
-		int check, a, b;
-		cin >> check >> a >> b;
-		if (check == 0) {
-			Union(a, b);
-		}
-		else {
-			int t1 = find(a);
-			int t2 = find(b);
-			if (t1 == t2) cout << "YES\n";
-			else cout << "NO\n";
+	cin >> N >> M;
+	for (int i = 0; i < N; ++i) A[i] = -1;
+	for (int i = 0; i < M; ++i) {
+		cin >> n >> m >> l;
+		if (n == 0)
+			merge(m, l);
+		else if (n == 1) {
+			if (find(m) == find(l))
+				cout << "YES" << '\n';
+			else
+				cout << "NO" << '\n';
 		}
 	}
 
-
-
+	return 0;
 }
