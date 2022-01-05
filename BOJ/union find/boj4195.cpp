@@ -6,8 +6,9 @@ using namespace std;
 
 int T, F;
 string friend1, friend2;
-int parent[100005];
-int level[100005];
+int parent[200010];
+int level[200010];
+//관계의 개수가 1000000이므로 최대의 인원 수는 2배 해줘야함
 
 int Find(int a) {
 	if (parent[a] == a) return a;
@@ -42,6 +43,12 @@ int main() {
 
 		map<string, int> m;
 		int index = 0;
+        for(int i=0 ; i<200001 ; i++) {
+            parent[i] = i;
+            level[i] = 1;
+        }
+	//tc가 여러개이므로 tc마다 초기화 필요!
+        
 		for (int i = 0; i < F; i++) {
 			cin >> friend1 >> friend2;
 			if (m.find(friend1) == m.end()) m[friend1] = index++;
